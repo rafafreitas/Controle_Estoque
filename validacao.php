@@ -42,9 +42,5 @@
       echo $e->getMessage();
    }
 
-/*
 
-http://www.pinceladasdaweb.com.br/blog/2008/01/21/8-expressoes-regulares-para-php-consideradas-uteis/
-
-*/
 ?>
