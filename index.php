@@ -40,7 +40,7 @@
 
         <p id="texto" class="text-center animated bounceInRight">Bem vindo ao sistema de Estoque!<br>Para acessá-lo informe suas credenciais.</p>
         
-
+teste
 
     </div>
         <!-- /#page-content-wrapper -->
