@@ -12,10 +12,11 @@
   $senha = $_POST['senha'];
 
  try{
-      $sql = $pdo->prepare("select id_user, nome, login, nivel, reset FROM usuarios WHERE (login = ?) AND (senha = sha1(?)) AND (ativo = 1) LIMIT 1");
+      $sql = $pdo->prepare("select id_user, nome, login, FROM usuarios WHERE (login = ?) LIMIT 1");
       $sql->bindParam(1, $login , PDO::PARAM_STR);
       $sql->bindParam(2, $senha , PDO::PARAM_STR);
       $res = $sql->execute();
+
       if ($reg = $sql->fetch(PDO::FETCH_OBJ)) {
         // Levanta a sessão 
         if (!isset($_SESSION)) session_start();
