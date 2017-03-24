@@ -38,6 +38,7 @@
         </div>
 
         <p id="texto" class="text-center animated bounceInRight">Bem vindo ao sistema de Estoque!<br>Para acessá-lo informe suas credenciais.</p>
+        <p id="teste" class="text-center"></p>
         
     </div>
         <!-- /#page-content-wrapper -->
