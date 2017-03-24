@@ -14,7 +14,6 @@
     <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
 
     
-
 </head>
 <body>
     <div id="wrapper">
