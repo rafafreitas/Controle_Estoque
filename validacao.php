@@ -34,15 +34,15 @@
 
           // Redireciona o visitante
           if ($_SESSION['UsuarioNivel'] == 1) {
-            header("Location: /estoque/index.php"); exit;
+            echo 1; //header("Location: /estoque/index.php"); exit;
           }
         
         }else{
-          header("Location: index.php?e=2");
+          echo 3;
         }
       
       }else{
-        header("Location: index.php?e=1");
+        echo 2;
       }
 
    }
