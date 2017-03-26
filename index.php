@@ -12,7 +12,21 @@
 
     <script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
     <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
-
+    
+    <?php
+    if (!empty($_SERVER['QUERY_STRING'])) $erro = $_GET["e"];
+    ?> 
+    <script>
+        <?php if ($erro == 1){ ?>
+        $(document).ready(function(){            
+            $("#telaInicial").removeClass("animated bounceInDown");
+            $("#login").addClass("animated shake");
+        }
+        <?php }elseif ($erro == 2) { ?>
+        $("#telaInicial").removeClass("animated bounceInDown");
+        $("#senha").addClass("animated shake");
+        <?php } ?>
+    </script>
     
 </head>
 <body>
@@ -38,7 +52,6 @@
         </div>
 
         <p id="texto" class="text-center animated bounceInRight">Bem vindo ao sistema de Estoque!<br>Para acessá-lo informe suas credenciais.</p>
-        <p id="teste" class="text-center"></p>
         
     </div>
         <!-- /#page-content-wrapper -->
