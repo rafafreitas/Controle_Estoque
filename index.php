@@ -13,19 +13,36 @@
     <script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
     <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
     
-    <?php
-    if (!empty($_SERVER['QUERY_STRING'])) $erro = $_GET["e"];
-    ?> 
     <script>
-        <?php if ($erro == 1){ ?>
-        $(document).ready(function(){            
-            $("#telaInicial").removeClass("animated bounceInDown");
-            $("#login").addClass("animated shake");
-        }
-        <?php }elseif ($erro == 2) { ?>
-        $("#telaInicial").removeClass("animated bounceInDown");
-        $("#senha").addClass("animated shake");
-        <?php } ?>
+        $(document).ready(function(){
+        $('#erroLogin').hide(); //Esconde o elemento com id errolog
+        $('#erroSenha').hide();
+            $('#formAcesso').submit(function(){  //Ao submeter formulário
+                $('#login').removeClass('animated shake');
+                $('#senha').removeClass('animated shake');
+                var login=$('#login').val();    //Pega valor do campo email
+                var senha=$('#senha').val();    //Pega valor do campo senha
+                $.ajax({            //Função AJAX
+                    url:"validacao.php",                    //Arquivo php
+                    type:"post",                            //Método de envio
+                    data: "login="+login+"&senha="+senha,   //Dados
+                    success: function (result){             //Sucesso no AJAX
+                        if(result==1){                      
+                            location.href='estoque/index.php'    //Redireciona
+                        }if(result==2){
+                            $('#login').addClass('animated shake');
+                            $('#erroSenha').hide();
+                            $('#erroLogin').show();
+                        }if (result==3) {
+                            $('#senha').addClass('animated shake');
+                            $('#erroLogin').hide();
+                            $('#erroSenha').show();
+                        }   
+                    }
+                })
+            return false;   //Evita que a página seja atualizada
+            })
+        })
     </script>
     
 </head>
@@ -37,20 +54,21 @@
         <div class="container animated bounceInDown" id="telaInicial">
             <p class="text-center" id="titulo">Acesso ao sistema</p>
 
-            <form role="form" method= "post" action="validacao.php">
+            <form role="form" id="formAcesso">
               <div class="form-group">
                 <label for="login"><span class="glyphicon glyphicon-user"></span> Username</label>
                 <input type="text" class="form-control" id="login" name="login" maxlength="25" placeholder="Informe seu login" required>
+                <p id="erroLogin">Login incorreto!</p>
               </div>
               <div class="form-group">
                 <label for="senha"><span class="glyphicon glyphicon-eye-open"></span> Password</label>
                 <input type="password" class="form-control" id="senha" name="senha" placeholder="Digite sua senha" required>
+                <p id="erroSenha">Senha incorreta!</p>
               </div>
             <button type="submit" class="btn btn-warning btn-block" ><span class="glyphicon glyphicon-off"></span> Login</button>
           </form>
 
         </div>
-
         <p id="texto" class="text-center animated bounceInRight">Bem vindo ao sistema de Estoque!<br>Para acessá-lo informe suas credenciais.</p>
         
     </div>
