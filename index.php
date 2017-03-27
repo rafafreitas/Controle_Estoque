@@ -28,7 +28,7 @@
                     data: "login="+login+"&senha="+senha,   //Dados
                     success: function (result){             //Sucesso no AJAX
                         if(result==1){                      
-                            location.href='estoque/index.php'    //Redireciona
+                            location.href='red.php'    //Redireciona
                         }if(result==2){
                             $('#login').addClass('animated shake');
                             $('#erroSenha').hide();

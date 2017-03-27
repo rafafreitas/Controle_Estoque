@@ -12,6 +12,24 @@
     <script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
     <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
 
+
+    <?php
+      // A sessão precisa ser iniciada em cada página diferente
+      if (!isset($_SESSION)) session_start();
+       $nivel_necessario = 1;
+       $nomeLogado = $_SESSION['UsuarioNome'];
+       $loginLogado = $_SESSION['UsuarioLogin'];
+
+      // Verifica se não há a variável da sessão que identifica o usuário
+      if ($_SESSION['UsuarioNivel'] != $nivel_necessario) {
+          // Destrói a sessão por segurança
+          session_destroy();
+          // Redireciona o visitante de volta pro login
+          header("Location: ../index.php"); exit;
+      }
+    ?>
+
+
     <script type="text/javascript">
 
         //Primeiro Dropdown caret
