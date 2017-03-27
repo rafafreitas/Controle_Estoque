@@ -20,6 +20,10 @@
                 <li>
                     <a href="reagentes.php"><i class="material-icons">invert_colors</i> - Reagentes</a>
                 </li>
+                <li>
+                    <a href="clientes.php"><i class="material-icons">assignment_ind</i>- Clientes</a>
+                </li>
+                
                 <li class="dropdown drop1">
                   <a href="#" class="dropdown-toggle dropA1" data-toggle="dropdown"><i class="material-icons">work</i> - Tarefas <span class="caret"></a>
                   <ul class="dropdown-menu" role="menu">
