@@ -11,53 +11,10 @@
 
     <script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
     <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src='js/main.js'></script>
 
-
-    <?php
-      // A sessão precisa ser iniciada em cada página diferente
-      if (!isset($_SESSION)) session_start();
-       $nivel_necessario = 1;
-       $nomeLogado = $_SESSION['UsuarioNome'];
-       $loginLogado = $_SESSION['UsuarioLogin'];
-
-      // Verifica se não há a variável da sessão que identifica o usuário
-      if ($_SESSION['UsuarioNivel'] != $nivel_necessario) {
-          // Destrói a sessão por segurança
-          session_destroy();
-          // Redireciona o visitante de volta pro login
-          header("Location: ../index.php"); exit;
-      }
-    ?>
-
-
-    <script type="text/javascript">
-
-        //Primeiro Dropdown caret
-        $(document).ready(function(){
-            $('.drop1').on('show.bs.dropdown', function(){
-                $(".dropA1").html('<i class="material-icons">work</i> - Tarefas <span class="dropup"><span class="caret"></span></span>');
-            });
-
-            $('.drop1').on('hide.bs.dropdown', function(){
-                $(".dropA1").html('<i class="material-icons">work</i> - Tarefas <span class="caret"></span>');
-            });
-
-
-        });
-        //Segundo Dropdown caret
-        $(document).ready(function(){
-            $('.drop2').on('show.bs.dropdown', function(){
-                $(".dropA2").html('<i class="material-icons">library_books</i> - Relatórios <span class="dropup"><span class="caret"></span></span>');
-            });
-
-            $('.drop2').on('hide.bs.dropdown', function(){
-                $(".dropA2").html('<i class="material-icons">library_books</i> - Relatórios <span class="caret"></span>');
-            });
-
-        });
-
-
-    </script>
+    <?php require_once ("validacao.php"); ?>
+  
 
 </head>
 <body>
@@ -85,35 +42,6 @@
 
     </div>
     <!-- /#wrapper -->
-<script type="text/javascript">
-$(document).ready(function () {
-  var trigger = $('.hamburger'),
-      overlay = $('.overlay'),
-     isClosed = false;
 
-    trigger.click(function () {
-      hamburger_cross();      
-    });
-
-    function hamburger_cross() {
-
-      if (isClosed == true) {          
-        overlay.hide();
-        trigger.removeClass('is-open');
-        trigger.addClass('is-closed');
-        isClosed = false;
-      } else {   
-        overlay.show();
-        trigger.removeClass('is-closed');
-        trigger.addClass('is-open');
-        isClosed = true;
-      }
-  }
-  
-  $('[data-toggle="offcanvas"]').click(function () {
-        $('#wrapper').toggleClass('toggled');
-  });  
-});
-</script>
 </body>
 </html>

@@ -14,12 +14,7 @@ if(!$pdo){
 /*
 
 CREATE DATABASE teste DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
-
-
 use teste;
-
-
-
 CREATE TABLE usuarios (
 	id_User INT(10) AUTO_INCREMENT NOT NULL primary key,
 	nome VARCHAR(50) NOT NULL ,
@@ -31,6 +26,12 @@ CREATE TABLE usuarios (
 	ativo BOOL NOT NULL DEFAULT '1',
 	ultima_alteracao DATETIME NOT NULL,
 	reset CHAR DEFAULT 'n');
+
+
+insert into usuarios (nome, login, senha,email, telefone, nivel, ativo, ultima_alteracao, reset)
+values
+	('root','root',SHA1('root123'), 'exemplo@exemplocom.br', '81-99511-1234', 1, 1, NOW(),'n'),
+	('cliente', 'cliente', SHA1('cliente123'), 'exemplo@exemplocom.br', '81-99511-1234', 2, 1, NOW(),'n');
 
 */
 
