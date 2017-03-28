@@ -1,3 +1,51 @@
+<?php include '../db/conecta.php';
+//Verificar se está sendo passado na URL a página atual, senao é atribuido a pagina 
+
+
+if (!empty($_GET['enter'])){
+$pesquisa = $_GET['enter'];
+//Códigos padrão
+$pagina = (isset($_GET['pagina']))? $_GET['pagina'] : 1;
+$sql = "select COUNT(*) AS quantidade FROM usuarios WHERE LOCATE('".$pesquisa."',nome)";//Passar com parametro
+foreach ($pdo->query($sql) as $row) 
+$total_usuários = $row['quantidade'];
+$qdt_pg = 6;
+$num_pagina = ceil($total_usuários/$qdt_pg);
+$incio = ($qdt_pg*$pagina)-$qdt_pg;
+
+//Com parametros
+//$busca = $pdo->prepare("select id_user, nome, login, nivel, ultima_alteracao from usuarios WHERE LOCATE('?',nome) ORDER BY nome;");
+//$busca->bindParam(1, $pesquisa, PDO::PARAM_STR);
+//$busca->execute();
+$sql = "select id_User, login, nome,ativo, nivel, DATE_FORMAT( ultima_alteracao , '%d/%m/%Y às %H:%i:%s' ) AS ultima_alteracao from usuarios WHERE LOCATE('".$pesquisa."',nome) ORDER BY login limit $incio, $qdt_pg;";//Passar com parametros
+
+}else{
+
+
+$pagina = (isset($_GET['pagina']))? $_GET['pagina'] : 1;
+
+//Selecionar todos os usuários da tabela
+$sql = "select COUNT(*) AS quantidade FROM usuarios WHERE id_user > 1;";
+foreach ($pdo->query($sql) as $row) 
+
+//Quantidade de Usuários
+$total_usuários = $row['quantidade'];
+
+//Seta a quantidade de usuários por pagina
+$qdt_pg = 6;
+
+//calcular o número de pagina necessárias para apresentar os cursos
+$num_pagina = ceil($total_usuários/$qdt_pg);
+
+//Calcular o inicio da visualizacao
+$incio = ($qdt_pg*$pagina)-$qdt_pg;
+
+//Selecionar os usuários a serem exibidos na página
+
+$sql = "select id_User, login, nome, ativo, DATE_FORMAT( ultima_alteracao , '%d/%m/%Y às %H:%i:%s' ) AS ultima_alteracao from usuarios where id_User > 1 ORDER BY login limit $incio, $qdt_pg";
+}
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -115,10 +163,10 @@
                         </p>
                         </div>
                         <div class="col-sm-6">
-                            <form class="form-horizontal" method="GET" action="index.php" style="max-width:500px; margin-bottom: 20px;">
+                            <form class="form-horizontal" method="GET" action="clientes.php" style="max-width:500px; margin-bottom: 20px;">
                                 <div class="input-group col-md-12">
                                     <?php 
-                                    include '../../_db/datalistUsers.php';
+                                    include 'db/datalistUsers.php';
                                     ?>
                                     <span class="input-group-btn">
                                     <button class="btn btn-info btn-md" type="submit">
@@ -129,11 +177,6 @@
                             </form>
                         </div> 
                         
-                        <div class="col-sm-3">
-                                <a href="index.php" class="btn btn-primary btn-md">
-                                <span class="glyphicon glyphicon-repeat"></span> Atualizar
-                                </a>
-                        </div>
                         <table class="table table-striped table-bordered">
                         <thead>
                             <tr>
@@ -183,7 +226,7 @@
                                     <li>
                                         <?php
                                         if($pagina_anterior != 0){ ?>
-                                            <a href="index.php?enter=<?php echo $pesquisa;?>&pagina=<?php echo $pagina_anterior; ?>" aria-label="Previous">
+                                            <a href="clientes.php?enter=<?php echo $pesquisa;?>&pagina=<?php echo $pagina_anterior; ?>" aria-label="Previous">
                                                 <span aria-hidden="true">&laquo;</span>
                                             </a>
                                         <?php }else{ ?>
@@ -193,12 +236,12 @@
                                     <?php 
                                     //Apresentar a paginacao
                                     for($i = 1; $i < $num_pagina + 1; $i++){ ?>
-                                        <li><a href="index.php?enter=<?php echo $pesquisa;?>&pagina=<?php echo $i; ?>"><?php echo $i; ?></a></li>
+                                        <li><a href="clientes.php?enter=<?php echo $pesquisa;?>&pagina=<?php echo $i; ?>"><?php echo $i; ?></a></li>
                                     <?php } ?>
                                     <li>
                                         <?php
                                         if($pagina_posterior <= $num_pagina){ ?>
-                                            <a href="index.php?enter=<?php echo $pesquisa;?>&pagina=<?php echo $pagina_posterior; ?>" aria-label="Previous">
+                                            <a href="clientes.php?enter=<?php echo $pesquisa;?>&pagina=<?php echo $pagina_posterior; ?>" aria-label="Previous">
                                                 <span aria-hidden="true">&raquo;</span>
                                             </a>
                                         <?php }else{ ?>
@@ -217,7 +260,7 @@
                                     <li>
                                         <?php
                                         if($pagina_anterior != 0){ ?>
-                                            <a href="index.php?pagina=<?php echo $pagina_anterior; ?>" aria-label="Previous">
+                                            <a href="clientes.php?pagina=<?php echo $pagina_anterior; ?>" aria-label="Previous">
                                                 <span aria-hidden="true">&laquo;</span>
                                             </a>
                                         <?php }else{ ?>
@@ -227,12 +270,12 @@
                                     <?php 
                                     //Apresentar a paginacao
                                     for($i = 1; $i < $num_pagina + 1; $i++){ ?>
-                                        <li><a href="index.php?pagina=<?php echo $i; ?>"><?php echo $i; ?></a></li>
+                                        <li><a href="clientes.php?pagina=<?php echo $i; ?>"><?php echo $i; ?></a></li>
                                     <?php } ?>
                                     <li>
                                         <?php
                                         if($pagina_posterior <= $num_pagina){ ?>
-                                            <a href="index.php?pagina=<?php echo $pagina_posterior; ?>" aria-label="Previous">
+                                            <a href="clientes.php?pagina=<?php echo $pagina_posterior; ?>" aria-label="Previous">
                                                 <span aria-hidden="true">&raquo;</span>
                                             </a>
                                         <?php }else{ ?>
