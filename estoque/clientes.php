@@ -139,6 +139,21 @@ $sql = "select id_User, login, nome, ativo, DATE_FORMAT( ultima_alteracao , '%d/
                                             <input pattern="^\d{2}-\d{5}-\d{4}$" type="tel" class="form-control" rows="3" id="telefone" name="telefone" OnKeyPress="formatar('##-#####-####', this)" maxlength="13" placeholder="00-00000-0000" style="max-width: 150px;" required></input>Caso deseje informar um Nº Fixo, colocar um 0 no lugar do 9º dígito.
                                         </div>
                                     </div>
+                                    <!--Endereço -->
+                                    <div class="form-group">
+                                        <label class="control-label col-sm-2" for="endereco">Endereço:</label>
+                                        <div class="col-sm-10"> 
+                                          <textarea class="form-control" rows="5" id="endereco" style="resize:vertical;"></textarea>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="control-label col-sm-2" for="endereco">Descrição:</label>
+                                        <div class="col-sm-10"> 
+                                          <textarea class="form-control" rows="5" id="descricao" style="resize:vertical;"></textarea>
+                                        </div>
+                                    </div>
+                                    
 
                                     <div class="form-group"> 
                                         <div class="col-sm-offset-2 col-sm-10">
