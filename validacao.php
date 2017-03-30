@@ -11,13 +11,14 @@
   $login = $_POST["login"];
   $senha = $_POST['senha'];
 
+
  try{
-      $sql = $pdo->prepare("select id_user FROM usuarios WHERE (login = ?) LIMIT 1");
+      $sql = $pdo->prepare("select Us_Id FROM Usuarios WHERE (Us_Login = ?) LIMIT 1");
       $sql->bindParam(1, $login , PDO::PARAM_STR);
       $res = $sql->execute();
 
       if ($reg = $sql->fetch(PDO::FETCH_OBJ)) {
-        $sql = $pdo->prepare("select id_user, nome, login, nivel, reset FROM usuarios WHERE (login = ?) AND (senha = sha1(?)) AND (ativo = 1) LIMIT 1");
+        $sql = $pdo->prepare("select Us_Id, Us_Nome, Us_Login, Us_Nivel, Us_Reset FRoM Usuarios WHERE (Us_Login = ?) AND (Us_Senha = sha1(?)) LIMIT 1");
         $sql->bindParam(1, $login , PDO::PARAM_STR);
         $sql->bindParam(2, $senha , PDO::PARAM_STR);
         $res = $sql->execute();
@@ -26,11 +27,11 @@
           // Levanta a sessão 
           if (!isset($_SESSION)) session_start();
           //Salva os dados encontrados na sessão
-          $_SESSION['UsuarioID'] = $reg->id_user;
-          $_SESSION['UsuarioNome'] = $reg->nome;
-          $_SESSION['UsuarioNivel'] = $reg->nivel;
-          $_SESSION['UsuarioLogin'] = $reg->login;
-          $_SESSION['Reset'] = $reg->reset;
+          $_SESSION['UsuarioID'] = $reg->Us_Id;
+          $_SESSION['UsuarioNome'] = $reg->Us_Nome;
+          $_SESSION['UsuarioNivel'] = $reg->Us_Nivel;
+          $_SESSION['UsuarioLogin'] = $reg->Us_Login;
+          $_SESSION['Reset'] = $reg->Us_Reset;
 
           // Redireciona o visitante
           if ($_SESSION['UsuarioNivel'] == 1) {

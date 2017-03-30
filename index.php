@@ -17,9 +17,11 @@
         $(document).ready(function(){
         $('#erroLogin').hide(); //Esconde o elemento com id errolog
         $('#erroSenha').hide();
+        $('#erroBanco').hide();
             $('#formAcesso').submit(function(){  //Ao submeter formulário
                 $('#login').removeClass('animated shake');
                 $('#senha').removeClass('animated shake');
+                $('#erroBanco').hide();
                 var login=$('#login').val();    //Pega valor do campo email
                 var senha=$('#senha').val();    //Pega valor do campo senha
                 $.ajax({            //Função AJAX
@@ -37,7 +39,10 @@
                             $('#senha').addClass('animated shake');
                             $('#erroLogin').hide();
                             $('#erroSenha').show();
-                        }   
+                        }if (result !=1 && result != 2 && result != 3){
+                            $('#erroBanco').show();
+                            $("#erroBanco").html("<p class='text-center'>Erro: "+ result+ "</p>");
+                        }  
                     }
                 })
             return false;   //Evita que a página seja atualizada
@@ -67,6 +72,7 @@
                 <p id="erroSenha">Senha incorreta!</p>
               </div>
             <button type="submit" class="btn btn-warning btn-block" ><span class="glyphicon glyphicon-off"></span> Login</button>
+            <p class="text-center" id="erroBanco"></p>
           </form>
 
         </div>
