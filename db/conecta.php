@@ -13,25 +13,22 @@ if(!$pdo){
 
 /*
 
-CREATE DATABASE teste DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
-use teste;
-CREATE TABLE usuarios (
-	id_User INT(10) AUTO_INCREMENT NOT NULL primary key,
-	nome VARCHAR(50) NOT NULL ,
-	login VARCHAR(25) NOT NULL UNIQUE ,
-	senha VARCHAR(40) NOT NULL ,
-	email VARCHAR(50) NOT NULL,
-	telefone VARCHAR(13) NOT NULL,
-	nivel INT(1) UNSIGNED NOT NULL DEFAULT '1',
-	ativo BOOL NOT NULL DEFAULT '1',
-	ultima_alteracao DATETIME NOT NULL,
-	reset CHAR DEFAULT 'n');
+CREATE DATABASE estoque DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
+use estoque;
 
+CREATE TABLE Usuarios (
+	Us_Id INT(10) AUTO_INCREMENT NOT NULL primary key,
+	Us_Login VARCHAR(25) NOT NULL UNIQUE ,
+    Us_Nome VARCHAR(50) NOT NULL,
+	Us_Senha VARCHAR(40) NOT NULL ,
+	Us_Email VARCHAR(50) NOT NULL,
+	Us_Nivel INT(1) UNSIGNED NOT NULL DEFAULT '1',
+	Us_Reset CHAR DEFAULT 'n');
 
-insert into usuarios (nome, login, senha,email, telefone, nivel, ativo, ultima_alteracao, reset)
-values
-	('root','root',SHA1('root123'), 'exemplo@exemplocom.br', '81-99511-1234', 1, 1, NOW(),'n'),
-	('cliente', 'cliente', SHA1('cliente123'), 'exemplo@exemplocom.br', '81-99511-1234', 2, 1, NOW(),'n');
+	insert into Usuarios (Us_Login, Us_Nome, Us_Email, Us_Senha, Us_Nivel, Us_Reset)
+	values
+	('root','Root Nome',SHA1('root123'), 'exemplo@exemplocom.br', 1,'n'),
+	('teste','Teste Nome',SHA1('teste123'), 'exemplo@exemplocom.br', 1,'n');
 
 */
 
