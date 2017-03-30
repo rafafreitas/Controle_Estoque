@@ -2,15 +2,21 @@
 
 include "../db/conecta.php";
 
-$consulta = $pdo->prepare("select nome from usuarios where id_User > 1 order by nome;");
-$consulta->execute();
+try {
+	$consulta = $pdo->prepare("select Cli_Nome from Clientes order by Cli_Nome;");
+	$consulta->execute();
 
-echo "<input list='enter' name='enter' class='form-control input-md' placeholder='Buscar'>";
-echo "<datalist id='enter'>";
-while ($linha = $consulta->fetch(PDO::FETCH_OBJ)) {
-	echo "<option value='".$linha->nome."'>";
+	echo "<input list='enter' name='enter' class='form-control input-md' placeholder='Buscar'>";
+	echo "<datalist id='enter'>";
+	while ($linha = $consulta->fetch(PDO::FETCH_OBJ)) {
+		echo "<option value='".$linha->Cli_Nome."'>";
+	}
+	echo "</datalist>";
+} catch (PDOException $e) {
+	echo 'ERROR: ' . $e->getCode(). ' DataList';
 }
-echo "</datalist>";
+
+
 
 
 

@@ -1,48 +1,60 @@
-<?php include '../db/conecta.php';
-//Verificar se está sendo passado na URL a página atual, senao é atribuido a pagina 
+<?php 
+
+require_once ("validacao.php");
+include '../db/conecta.php';
 
 
 if (!empty($_GET['enter'])){
-$pesquisa = $_GET['enter'];
-//Códigos padrão
-$pagina = (isset($_GET['pagina']))? $_GET['pagina'] : 1;
-$sql = "select COUNT(*) AS quantidade FROM usuarios WHERE LOCATE('".$pesquisa."',nome)";//Passar com parametro
-foreach ($pdo->query($sql) as $row) 
-$total_usuários = $row['quantidade'];
-$qdt_pg = 6;
-$num_pagina = ceil($total_usuários/$qdt_pg);
-$incio = ($qdt_pg*$pagina)-$qdt_pg;
+    try{
+        $pesquisa = $_GET['enter'];
+        //Códigos padrão
+        $pagina = (isset($_GET['pagina']))? $_GET['pagina'] : 1;
+        $sql = "select COUNT(*) AS quantidade FROM Clientes WHERE LOCATE('".$pesquisa."',Cli_Nome)";//Passar com parametro
+        foreach ($pdo->query($sql) as $row) 
+        $total_usuários = $row['quantidade'];
+        $qdt_pg = 6;
+        $num_pagina = ceil($total_usuários/$qdt_pg);
+        $incio = ($qdt_pg*$pagina)-$qdt_pg;
 
-//Com parametros
-//$busca = $pdo->prepare("select id_user, nome, login, nivel, ultima_alteracao from usuarios WHERE LOCATE('?',nome) ORDER BY nome;");
-//$busca->bindParam(1, $pesquisa, PDO::PARAM_STR);
-//$busca->execute();
-$sql = "select id_User, login, nome,ativo, nivel, DATE_FORMAT( ultima_alteracao , '%d/%m/%Y às %H:%i:%s' ) AS ultima_alteracao from usuarios WHERE LOCATE('".$pesquisa."',nome) ORDER BY login limit $incio, $qdt_pg;";//Passar com parametros
+        //Com parametros
+        //$busca = $pdo->prepare("select id_user, nome, login, nivel, ultima_alteracao from usuarios WHERE LOCATE('?',nome) ORDER BY nome;");
+        //$busca->bindParam(1, $pesquisa, PDO::PARAM_STR);
+        //$busca->execute();
+        $sql = "select Cli_Id, Cli_Nome, Cli_Telefone, Cli_Email, from Clientes WHERE LOCATE('".$pesquisa."',Cli_Nome) ORDER BY Cli_Nome limit $incio, $qdt_pg;";//Passar com parametros
+
+    }catch(PDOException $e) {
+        echo 'ERROR: ' . $e->getCode() . ' Pesquisa GET';
+    }
 
 }else{
 
+    try {
+        $pagina = (isset($_GET['pagina']))? $_GET['pagina'] : 1;
 
-$pagina = (isset($_GET['pagina']))? $_GET['pagina'] : 1;
+        //Selecionar todos os usuários da tabela
+        $sql = "select COUNT(*) AS quantidade FROM Clientes;";
+        foreach ($pdo->query($sql) as $row) 
 
-//Selecionar todos os usuários da tabela
-$sql = "select COUNT(*) AS quantidade FROM usuarios WHERE id_user > 1;";
-foreach ($pdo->query($sql) as $row) 
+        //Quantidade de Usuários
+        $total_usuários = $row['quantidade'];
 
-//Quantidade de Usuários
-$total_usuários = $row['quantidade'];
+        //Seta a quantidade de usuários por pagina
+        $qdt_pg = 6;
 
-//Seta a quantidade de usuários por pagina
-$qdt_pg = 6;
+        //calcular o número de pagina necessárias para apresentar os cursos
+        $num_pagina = ceil($total_usuários/$qdt_pg);
 
-//calcular o número de pagina necessárias para apresentar os cursos
-$num_pagina = ceil($total_usuários/$qdt_pg);
+        //Calcular o inicio da visualizacao
+        $incio = ($qdt_pg*$pagina)-$qdt_pg;
 
-//Calcular o inicio da visualizacao
-$incio = ($qdt_pg*$pagina)-$qdt_pg;
+        //Selecionar os usuários a serem exibidos na página
 
-//Selecionar os usuários a serem exibidos na página
+        $sql = "select Cli_Id, Cli_Nome, Cli_Telefone, Cli_Email, from Clientes ORDER BY Cli_Nome limit $incio, $qdt_pg";
+    } catch (PDOException $e) {
+        echo 'ERROR: ' . $e->getCode() . ' Dados preparatórios para formação da Tabela';
+    }
 
-$sql = "select id_User, login, nome, ativo, DATE_FORMAT( ultima_alteracao , '%d/%m/%Y às %H:%i:%s' ) AS ultima_alteracao from usuarios where id_User > 1 ORDER BY login limit $incio, $qdt_pg";
+
 }
 
 ?>
@@ -62,7 +74,6 @@ $sql = "select id_User, login, nome, ativo, DATE_FORMAT( ultima_alteracao , '%d/
     <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
     <script type="text/javascript" src='js/main.js'></script>
 
-    <?php require_once ("validacao.php"); ?>
     
     <script>
         function deleteUser(idUser) {
@@ -143,14 +154,14 @@ $sql = "select id_User, login, nome, ativo, DATE_FORMAT( ultima_alteracao , '%d/
                                     <div class="form-group">
                                         <label class="control-label col-sm-2" for="endereco">Endereço:</label>
                                         <div class="col-sm-10"> 
-                                          <textarea class="form-control" rows="5" id="endereco" style="resize:vertical;"></textarea>
+                                          <textarea class="form-control" rows="4" id="endereco" style="resize:vertical;"></textarea>
                                         </div>
                                     </div>
 
                                     <div class="form-group">
                                         <label class="control-label col-sm-2" for="endereco">Descrição:</label>
                                         <div class="col-sm-10"> 
-                                          <textarea class="form-control" rows="5" id="descricao" style="resize:vertical;"></textarea>
+                                          <textarea class="form-control" rows="4" id="descricao" style="resize:vertical;"></textarea>
                                         </div>
                                     </div>
                                     
@@ -195,36 +206,33 @@ $sql = "select id_User, login, nome, ativo, DATE_FORMAT( ultima_alteracao , '%d/
                         <table class="table table-striped table-bordered">
                         <thead>
                             <tr>
-                                <th>Login</th>
                                 <th>Nome</th>
-                                <th>Ativo</th>
-                                <th>Última Alteração</th>
+                                <th>Telefone</th>
+                                <th>E-Mail</th>
                                 <th>Ações</th>
                             </tr>
                         </thead>
                         <?php 
+                        try {
                             foreach ($pdo->query($sql) as $row) {
-                            if ($row['ativo'] == 1) {
-                                $status_user = 'Sim';
-                            }elseif ($row['ativo'] == 2) {
-                                $status_user = 'Não';           
-                            }
                             echo '<tr>';
-                            echo '<td>'. $row['login'] . '</td>';
-                            echo '<td>'. $row['nome'] . '</td>';
-                            echo '<td>'. $status_user . '</td>';
-                            echo '<td>'. $row['ultima_alteracao'] . '</td>';
+                            echo '<td>'. $row['Cli_Nome'] . '</td>';
+                            echo '<td>'. $row['Cli_Telefone'] . '</td>';
+                            echo '<td>'. $row['Cli_Email'] . '</td>';
 
                             echo '<td width=250>';
-                            echo '<a class="btn" href="read.php?id='.$row['id_User'].'">Ver</a>';
+                            echo '<a class="btn" href="read.php?id='.$row['Cli_Id'].'">Ver</a>';
                             echo '&nbsp;';
-                            echo '<a class="btn btn-success" href="update.php?id='.$row['id_User'].'">Atualizar</a>';
+                            echo '<a class="btn btn-success" href="update.php?id='.$row['Cli_Id'].'">Atualizar</a>';
                             echo '&nbsp;';
-                            echo '<a class="btn btn-danger" onclick="deleteUser('.$row['id_User'].');">Apagar</a>';
+                            echo '<a class="btn btn-danger" onclick="deleteUser('.$row['Cli_Id'].');">Apagar</a>';
                             //echo '<a class="btn btn-danger" href="delete.php?id='.$row['id_User'].'">Apagar</a>';
                             echo '</td>';
                             echo '</tr>';
-                            }?>
+                            }
+                        } catch (Exception $e) {
+                            echo 'ERROR: ' . $e->getCode() .'Formação das Linhas';
+                        }?>
 
                         </tbody>
                         </table>

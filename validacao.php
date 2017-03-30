@@ -18,7 +18,7 @@
       $res = $sql->execute();
 
       if ($reg = $sql->fetch(PDO::FETCH_OBJ)) {
-        $sql = $pdo->prepare("select Us_Id, Us_Nome, Us_Login, Us_Nivel, Us_Reset FRoM Usuarios WHERE (Us_Login = ?) AND (Us_Senha = sha1(?)) LIMIT 1");
+        $sql = $pdo->prepare("select Us_Id, Us_Nome, Us_Login, Us_Nivel, Us_Reset FROM Usuarios WHERE (Us_Login = ?) AND (Us_Senha = sha1(?)) LIMIT 1");
         $sql->bindParam(1, $login , PDO::PARAM_STR);
         $sql->bindParam(2, $senha , PDO::PARAM_STR);
         $res = $sql->execute();
