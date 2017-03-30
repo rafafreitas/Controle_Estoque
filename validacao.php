@@ -1,6 +1,5 @@
 <?php
 
- include 'db/conecta.php';
   // Verifica se houve POST e se o usuário ou a senha é(são) vazio(s)
   if (!empty($_POST) AND (empty($_POST['login']) OR empty($_POST['senha']))) {
       header("Location: index.php"); exit;
@@ -13,6 +12,7 @@
 
 
  try{
+      include 'db/conecta.php';
       $sql = $pdo->prepare("select Us_Id FROM Usuarios WHERE (Us_Login = ?) LIMIT 1");
       $sql->bindParam(1, $login , PDO::PARAM_STR);
       $res = $sql->execute();
@@ -48,7 +48,8 @@
 
    }
    catch(PDOException $e){
-      echo $e->getMessage();
+      echo $e->getCode();
+      //echo "\nPDO::errorCode(): ", $pdo->errorCode();
    }
 
 /*

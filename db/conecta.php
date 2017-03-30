@@ -7,7 +7,7 @@ try {
 	$pdo->exec("SET CHARACTER SET UTF8");
   
 } catch(PDOException $e) {
-    echo 'ERROR: ' . $e->getMessage();
+    echo 'ERROR: ' . $e->getCode();
 }
 
 
