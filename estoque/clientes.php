@@ -102,9 +102,21 @@ if (!empty($_GET['enter'])){
 
         }
 
+        //Atualizar dados do cliente.
         $(document).ready(function(){
-            $('button:button').click(function() {
-                alert($(this).val());
+            $('button#atualizar').click(function() {
+                var idAtualizar=$('#atualizar').val();
+                $.ajax({            
+                    url:"db/atualizarCliente.php",                    
+                    type:"post",                            
+                    data: "Cli_Id="+idAtualizar,   
+                    success: function (result){             //Sucesso no AJAX
+                        $("#nome1").val(result);
+                        //$("#nome2").val(result.teste2);
+                        $("#myModalAtualizar").modal({backdrop: false});
+                    }
+                })
+                //alert((this).val());
             });
         });
 </script>
@@ -131,7 +143,7 @@ if (!empty($_GET['enter'])){
                         <div class="modal-content">
                             <div class="modal-body" style="padding:40px 50px;">
                                 <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                <h3>Cadastro rápido de usuários <span class="glyphicon glyphicon-user"></span></h3>
+                                <h3>Cadastro de clientes  <span class="glyphicon glyphicon-user"></span></h3>
                                     
                                 <form class="form-horizontal" method="POST" action="create_user.php" style="max-width: 600px;">
                                       <!--Nome-->
@@ -177,10 +189,48 @@ if (!empty($_GET['enter'])){
                                         </div>
                                     </div>
                                 </form>
-                            </div> <!--modal-body-->
-                        </div><!--modal-content-->
-                    </div><!--modal-dialog-->
-                </div> <!--modal fade-->
+                            </div> <!--modal-body (Cadastrar)-->
+                        </div><!--modal-content (Cadastrar)-->
+                    </div><!--modal-dialog (Cadastrar)-->
+                </div> <!--modal fade (Cadastrar)-->
+
+                <!--Modal para atualizaçao-->
+                <div class="modal fade" id="myModalAtualizar" role="dialog">
+                    <div class="modal-dialog">
+                        <!-- Modal content-->
+                        <div class="modal-content">
+                            <div class="modal-body" style="padding:40px 50px;">
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                <h3>Atualizar Dados <span class="glyphicon glyphicon-user"></span></h3>
+                                    
+                                <form class="form-horizontal" method="POST" action="create_user.php" style="max-width: 600px;">
+                                      <!--Nome-->
+                                    <div class="form-group">
+                                        <label class="control-label col-sm-2" for="nome1">Nome1:</label>
+                                        <div class="col-sm-10">
+                                          <input type="text" class="form-control" id="nome1" name="nome1" placeholder="Informe o nome do usuário" required>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="control-label col-sm-2" for="nome2">Nome2:</label>
+                                        <div class="col-sm-10">
+                                          <input type="text" class="form-control" id="nome2" name="nome2" placeholder="Informe o nome do usuário" required>
+                                        </div>
+                                    </div>
+                                    
+
+                                    <div class="form-group"> 
+                                        <div class="col-sm-offset-2 col-sm-10">
+                                            <button type="submit" class="btn btn-default">Cadastrar</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div> <!--modal-body (Atualizar)-->
+                        </div><!--modal-content (Atualizar)-->
+                    </div><!--modal-dialog (Atualizar)-->
+                </div> <!--modal fade (Atualizar)-->
+
 
                 <!--Tabela de consulta-->
                 <div class="container">
