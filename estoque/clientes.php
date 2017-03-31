@@ -221,9 +221,9 @@ if (!empty($_GET['enter'])){
                             echo '<td>'. $row['Cli_Email'] . '</td>';
 
                             echo '<td width=250>';
-                            echo '<a class="btn" href="read.php?id='.$row['Cli_Id'].'">Ver</a>';
+                            echo '<a class="btn" id="ver'.$row['Cli_Id'].'">Ver</a>';
                             echo '&nbsp;';
-                            echo '<a class="btn btn-success" href="update.php?id='.$row['Cli_Id'].'">Atualizar</a>';
+                            echo '<a class="btn btn-success" id="atualizar'.$row['Cli_Id'].'">Atualizar</a>';
                             echo '&nbsp;';
                             echo '<a class="btn btn-danger" onclick="deleteUser('.$row['Cli_Id'].');">Apagar</a>';
                             //echo '<a class="btn btn-danger" href="delete.php?id='.$row['id_User'].'">Apagar</a>';
