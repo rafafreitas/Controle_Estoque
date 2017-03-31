@@ -84,24 +84,29 @@ if (!empty($_GET['enter'])){
             }
         }
 
-    //Script Modal Login
-    $(document).ready(function(){
-      $("#myBtn").click(function(){
-          $("#myModal").modal({backdrop: false});
-      });
-  });
+        //Script Modal Login
+        $(document).ready(function(){
+            $("#myBtn").click(function(){
+                $("#myModal").modal({backdrop: false});
+            });
+        });
 
-    function formatar(mascara, documento){
-      var i = documento.value.length;
-      var saida = mascara.substring(0,1);
-      var texto = mascara.substring(i)
-      
-      if (texto.substring(0,1) != saida){
-        documento.value += texto.substring(0,1);
-    }
+        function formatar(mascara, documento){
+            var i = documento.value.length;
+            var saida = mascara.substring(0,1);
+            var texto = mascara.substring(i)
+          
+            if (texto.substring(0,1) != saida){
+                documento.value += texto.substring(0,1);
+            }   
 
-}
+        }
 
+        $(document).ready(function(){
+            $('button:button').click(function() {
+                alert($(this).val());
+            });
+        });
 </script>
 
 </head>
@@ -221,11 +226,11 @@ if (!empty($_GET['enter'])){
                             echo '<td>'. $row['Cli_Email'] . '</td>';
 
                             echo '<td width=250>';
-                            echo '<a class="btn" id="ver'.$row['Cli_Id'].'">Ver</a>';
+                            echo '<button type="button" class="btn" id="ver" value="'.$row['Cli_Id'].'">Ver</button>';
                             echo '&nbsp;';
-                            echo '<a class="btn btn-success" id="atualizar'.$row['Cli_Id'].'">Atualizar</a>';
+                            echo '<button type="button" class="btn btn-success" id="atualizar" value="'.$row['Cli_Id'].'">Atualizar</a>';
                             echo '&nbsp;';
-                            echo '<a class="btn btn-danger" onclick="deleteUser('.$row['Cli_Id'].');">Apagar</a>';
+                            echo '<button type="button" class="btn btn-danger" onclick="deleteUser('.$row['Cli_Id'].');">Apagar</a>';
                             //echo '<a class="btn btn-danger" href="delete.php?id='.$row['id_User'].'">Apagar</a>';
                             echo '</td>';
                             echo '</tr>';
