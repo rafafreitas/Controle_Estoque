@@ -102,17 +102,27 @@ if (!empty($_GET['enter'])){
 
         }
 
+        /*
+        $(document).ready(function(){
+            $('button:button').click(function() {
+                alert($(this).val());
+            });
+        });
+        */
+
         //Atualizar dados do cliente.
         $(document).ready(function(){
             $('button#atualizar').click(function() {
-                var idAtualizar=$('#atualizar').val();
-                $.ajax({            
+                var idAtualizar=$(this).val();
+                $.ajax({
                     url:"db/atualizarCliente.php",                    
                     type:"post",                            
-                    data: "Cli_Id="+idAtualizar,   
-                    success: function (result){             //Sucesso no AJAX
-                        $("#nome1").val(result);
-                        //$("#nome2").val(result.teste2);
+                    data: "Cli_Id="+idAtualizar,
+                    dataType: "JSON",
+                    success: function (result){ 
+                        //var dados = JSON.parse(result);
+                        $("#nome1").val(result[0].Cli_Nome);
+                        //$("#nome2").val(result[1].Cli_Nome);
                         $("#myModalAtualizar").modal({backdrop: false});
                     }
                 })
