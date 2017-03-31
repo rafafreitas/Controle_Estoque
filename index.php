@@ -22,7 +22,7 @@
                 $('#login').removeClass('animated shake');
                 $('#senha').removeClass('animated shake');
                 $('#erroBanco').hide();
-                var login=$('#login').val();    //Pega valor do campo email
+                var login=$('#login').val();    //Pega valor do campo Login
                 var senha=$('#senha').val();    //Pega valor do campo senha
                 $.ajax({            //Função AJAX
                     url:"validacao.php",                    //Arquivo php
