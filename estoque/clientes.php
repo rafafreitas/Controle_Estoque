@@ -20,7 +20,7 @@ if (!empty($_GET['enter'])){
         //$busca = $pdo->prepare("select id_user, nome, login, nivel, ultima_alteracao from usuarios WHERE LOCATE('?',nome) ORDER BY nome;");
         //$busca->bindParam(1, $pesquisa, PDO::PARAM_STR);
         //$busca->execute();
-        $sql = "select Cli_Id, Cli_Nome, Cli_Telefone, Cli_Email, from Clientes WHERE LOCATE('".$pesquisa."',Cli_Nome) ORDER BY Cli_Nome limit $incio, $qdt_pg;";//Passar com parametros
+        $sql = "select Cli_Id, Cli_Nome, Cli_Telefone, Cli_Email from Clientes WHERE LOCATE('".$pesquisa."',Cli_Nome) ORDER BY Cli_Nome limit $incio, $qdt_pg;";//Passar com parametros
 
     }catch(PDOException $e) {
         echo 'ERROR: ' . $e->getCode() . ' Pesquisa GET';
@@ -49,7 +49,7 @@ if (!empty($_GET['enter'])){
 
         //Selecionar os usuários a serem exibidos na página
 
-        $sql = "select Cli_Id, Cli_Nome, Cli_Telefone, Cli_Email, from Clientes ORDER BY Cli_Nome limit $incio, $qdt_pg";
+        $sql = "select Cli_Id, Cli_Nome, Cli_Telefone, Cli_Email from Clientes ORDER BY Cli_Nome limit $incio, $qdt_pg";
     } catch (PDOException $e) {
         echo 'ERROR: ' . $e->getCode() . ' Dados preparatórios para formação da Tabela';
     }
