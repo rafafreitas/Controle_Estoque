@@ -121,14 +121,38 @@ if (!empty($_GET['enter'])){
                     dataType: "JSON",
                     success: function (result){ 
                         //var dados = JSON.parse(result);
-                        $("#nome1").val(result[0].Cli_Nome);
-                        //$("#nome2").val(result[1].Cli_Nome);
+                        $("#idAt").val(result[0].Cli_Id);
+                        $("#nomeAt").val(result[0].Cli_Nome);
+                        $("#emailAt").val(result[0].Cli_Email);
+                        $("#telefoneAt").val(result[0].Cli_Telefone);
+                        $("#enderecoAt").val(result[0].Cli_Endereco);
+                        $("#descricaoAt").val(result[0].Cli_Descricao);
                         $("#myModalAtualizar").modal({backdrop: false});
                     }
-                })
+                });
                 //alert((this).val());
             });
+
+            $('#formAtualizar').submit(function(){
+                var json = jQuery(this).serialize();
+                $.ajax({
+                    type: "POST",
+                    url: "db/atualizarCliente.php",
+                    data: json,
+                    success: function(result)
+                    {
+                        alert(result);
+                    }
+                });
+
+
+                return false;
+                //location.reload();
+            });
+            
         });
+
+
 </script>
 
 </head>
@@ -211,28 +235,50 @@ if (!empty($_GET['enter'])){
                         <div class="modal-content">
                             <div class="modal-body" style="padding:40px 50px;">
                                 <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                <h3>Atualizar Dados <span class="glyphicon glyphicon-user"></span></h3>
+                                <h3><span class="glyphicon glyphicon-pencil"></span> Atualizar Dados</h3>
                                     
-                                <form class="form-horizontal" method="POST" action="create_user.php" style="max-width: 600px;">
+                                <form class="form-horizontal" id="formAtualizar" style="max-width: 600px;">
                                       <!--Nome-->
                                     <div class="form-group">
-                                        <label class="control-label col-sm-2" for="nome1">Nome1:</label>
+                                        <label class="control-label col-sm-2" for="nomeAt">Nome:</label>
                                         <div class="col-sm-10">
-                                          <input type="text" class="form-control" id="nome1" name="nome1" placeholder="Informe o nome do usuário" required>
+                                          <input type="text" class="form-control" id="nomeAt" name="nomeAt" placeholder="Informe o nome do usuário" required>
+                                        </div>
+                                    </div>
+                                    <!--E-Mail-->
+                                    <div class="form-group">
+                                        <label class="control-label col-sm-2" for="emailAt">E-Mail:</label>
+                                        <div class="col-sm-10"> 
+                                          <input type="email" class="form-control" id="emailAt" name="emailAt" placeholder="E-mail para contato." pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" title="exemplo@exemplo.com" required>
+                                        </div>
+                                    </div>
+                                    <!--Telefone-->
+                                    <div class="form-group">
+                                        <label class="control-label col-sm-2" for="telefoneAt">Telefone:</label>
+                                        <div class="col-sm-10">
+                                            <input pattern="^\d{2}-\d{5}-\d{4}$" type="tel" class="form-control" rows="3" id="telefoneAt" name="telefoneAt" OnKeyPress="formatar('##-#####-####', this)" maxlength="13" placeholder="00-00000-0000" style="max-width: 150px;" required></input>Caso deseje informar um Nº Fixo, colocar um 0 no lugar do 9º dígito.
+                                        </div>
+                                    </div>
+                                    <!--Endereço -->
+                                    <div class="form-group">
+                                        <label class="control-label col-sm-2" for="enderecoAt">Endereço:</label>
+                                        <div class="col-sm-10"> 
+                                          <textarea class="form-control" rows="4" id="enderecoAt" style="resize:vertical;"></textarea>
                                         </div>
                                     </div>
 
                                     <div class="form-group">
-                                        <label class="control-label col-sm-2" for="nome2">Nome2:</label>
-                                        <div class="col-sm-10">
-                                          <input type="text" class="form-control" id="nome2" name="nome2" placeholder="Informe o nome do usuário" required>
+                                        <label class="control-label col-sm-2" for="descricaoAt">Descrição:</label>
+                                        <div class="col-sm-10"> 
+                                          <textarea class="form-control" rows="4" id="descricaoAt" style="resize:vertical;"></textarea>
+                                          <input type="hidden" name="idAt" id="idAt" value="">
                                         </div>
                                     </div>
                                     
 
                                     <div class="form-group"> 
                                         <div class="col-sm-offset-2 col-sm-10">
-                                            <button type="submit" class="btn btn-default">Cadastrar</button>
+                                            <button type="submit" class="btn btn-default" id="btnAtualizar">Atualizar</button>
                                         </div>
                                     </div>
                                 </form>
@@ -288,9 +334,9 @@ if (!empty($_GET['enter'])){
                             echo '<td width=250>';
                             echo '<button type="button" class="btn" id="ver" value="'.$row['Cli_Id'].'">Ver</button>';
                             echo '&nbsp;';
-                            echo '<button type="button" class="btn btn-success" id="atualizar" value="'.$row['Cli_Id'].'">Atualizar</a>';
+                            echo '<button type="button" class="btn btn-success" id="atualizar" value="'.$row['Cli_Id'].'">Atualizar</button>';
                             echo '&nbsp;';
-                            echo '<button type="button" class="btn btn-danger" onclick="deleteUser('.$row['Cli_Id'].');">Apagar</a>';
+                            echo '<button type="button" class="btn btn-danger" onclick="deleteUser('.$row['Cli_Id'].');">Apagar</button>';
                             //echo '<a class="btn btn-danger" href="delete.php?id='.$row['id_User'].'">Apagar</a>';
                             echo '</td>';
                             echo '</tr>';
@@ -323,9 +369,13 @@ if (!empty($_GET['enter'])){
                                     </li>
                                     <?php 
                                     //Apresentar a paginacao
-                                    for($i = 1; $i < $num_pagina + 1; $i++){ ?>
+                                    for($i = 1; $i < $num_pagina + 1; $i++){
+                                        if ($i == $pagina){
+                                        ?>
+                                        <li class="active"><a href="clientes.php?enter=<?php echo $pesquisa;?>&pagina=<?php echo $i; ?>"><?php echo $i; ?></a></li>
+                                        <?php }else{?>
                                         <li><a href="clientes.php?enter=<?php echo $pesquisa;?>&pagina=<?php echo $i; ?>"><?php echo $i; ?></a></li>
-                                    <?php } ?>
+                                    <?php } } ?>
                                     <li>
                                         <?php
                                         if($pagina_posterior <= $num_pagina){ ?>
@@ -357,9 +407,12 @@ if (!empty($_GET['enter'])){
                                     </li>
                                     <?php 
                                     //Apresentar a paginacao
-                                    for($i = 1; $i < $num_pagina + 1; $i++){ ?>
+                                    for($i = 1; $i < $num_pagina + 1; $i++){ 
+                                    if ($i == $pagina) { ?>
+                                        <li class="active"><a href="clientes.php?pagina=<?php echo $i; ?>"><?php echo $i; ?></a></li>
+                                    <?php }else{ ?>
                                         <li><a href="clientes.php?pagina=<?php echo $i; ?>"><?php echo $i; ?></a></li>
-                                    <?php } ?>
+                                    <?php } }?>
                                     <li>
                                         <?php
                                         if($pagina_posterior <= $num_pagina){ ?>
