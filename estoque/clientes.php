@@ -113,6 +113,7 @@ if (!empty($_GET['enter'])){
         //Atualizar dados do cliente.
         $(document).ready(function(){
             $('button#atualizar').click(function() {
+                $('#retornoAt').hide();
                 var idAtualizar=$(this).val();
                 $.ajax({
                     url:"db/atualizarCliente.php",                    
@@ -134,6 +135,7 @@ if (!empty($_GET['enter'])){
             });
 
             $('#formAtualizar').submit(function(){
+                $('#retornoAt').hide();
                 var json = jQuery(this).serialize();
                 $.ajax({
                     type: "POST",
@@ -141,7 +143,15 @@ if (!empty($_GET['enter'])){
                     data: json,
                     success: function(result)
                     {
-                        alert(result);
+                        if(result==1){
+                            $('#retornoAt').show();
+                            $('#retornoAt').addClass('animated shake');                     
+                            $("#retornoAt").html("<p class='text-center'>Informações atualizadas!</p>");
+                        }if (result !=1){
+                            $('#retornoAt').show();
+                            $('#retornoAt').addClass('animated shake');                     
+                            $("#retornoAt").html("<p class='text-center'>Ops!: "+ result+ "</p>");
+                        }
                     }
                 });
 
@@ -279,6 +289,7 @@ if (!empty($_GET['enter'])){
                                     <div class="form-group"> 
                                         <div class="col-sm-offset-2 col-sm-10">
                                             <button type="submit" class="btn btn-default" id="btnAtualizar">Atualizar</button>
+                                            <p id="retornoAt" class="text-center"></p>
                                         </div>
                                     </div>
                                 </form>
