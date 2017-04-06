@@ -1,9 +1,9 @@
 <?php
 
-
-if (!empty($_POST['Cli_Id'])) {
+//Pegar Dados dos Clientes
+if (!empty($_POST['Cli_Id_At'])) {
   try{
-    $Cli_Id = $_POST["Cli_Id"];
+    $Cli_Id = $_POST["Cli_Id_At"];
     include '../../db/conecta.php';
 
     $sql = $pdo->prepare("select Cli_Id, Cli_Nome, Cli_Telefone, Cli_Email, Cli_Endereco, Cli_Descricao, DATE_FORMAT( Cli_Ultima_Alteracao , '%d/%m/%Y Às %H:%i:%s' ) AS Cli_Ultima_Alteracao FROM Clientes WHERE Cli_Id = ? LIMIT 1");
@@ -21,6 +21,31 @@ if (!empty($_POST['Cli_Id'])) {
     echo $e->getCode();
   }
 
+//Deletar Clientes
+}elseif (!empty($_POST['Cli_Id_Del'])) {
+	try{
+    $Cli_Id = $_POST["Cli_Id_Del"];
+    include '../../db/conecta.php';
+
+    $sql = $pdo->prepare("delete FROM Clientes WHERE Cli_Id = ?");
+    $sql->bindParam(1, $Cli_Id , PDO::PARAM_INT);
+    $sql->execute();
+
+	$count = $sql->rowCount();
+
+    if ($count == 1) {
+    	echo "1";
+    }else{
+    	echo "Ocorreu um ERRO na execução da instrução!";
+    }   
+
+  }
+  catch(PDOException $e){
+    echo $e->getCode();
+  }	
+
+
+//Atualizar dados dos Clientes
 }elseif (!empty($_POST)) {
 
 	try{

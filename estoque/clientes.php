@@ -76,13 +76,6 @@ if (!empty($_GET['enter'])){
 
     
     <script>
-        function deleteUser(idUser) {
-            var r = confirm("Você confirma a exclusão do Usuário?");
-            if (r == true) {
-                alert("O ID que será excluido é:" + idUser);
-                document.location.href = "delete.php?id="+idUser;
-            }
-        }
 
         //Script Modal Login
         $(document).ready(function(){
@@ -102,23 +95,40 @@ if (!empty($_GET['enter'])){
 
         }
 
-        /*
-        $(document).ready(function(){
-            $('button:button').click(function() {
-                alert($(this).val());
-            });
-        });
-        */
 
-        //Atualizar dados do cliente.
+        //Manter dados do cliente.
         $(document).ready(function(){
+
+            // Função Clicar Botão Ver
+            $('button#ver').click(function() {
+                var idVer=$(this).val();
+                $.ajax({
+                    url:"db/manterCliente.php",                    
+                    type:"post",                            
+                    data: "Cli_Id_At="+idAtualizar,
+                    dataType: "JSON",
+                    success: function (result){ 
+                        //var dados = JSON.parse(result);
+                        $("#idVer").val(result[0].Cli_Id);
+                        $("#nomeVer").val(result[0].Cli_Nome);
+                        $("#emailVer").val(result[0].Cli_Email);
+                        $("#telefoneVer").val(result[0].Cli_Telefone);
+                        $("#enderecoVer").val(result[0].Cli_Endereco);
+                        $("#descricaoVer").val(result[0].Cli_Descricao);
+                        $("#myModalVer").modal({backdrop: false});
+                    }
+                });
+                
+            });// Fim da Função Clicar Botão Ver
+
+            // Função Clicar Botão Atualizar
             $('button#atualizar').click(function() {
                 $('#retornoAt').hide();
                 var idAtualizar=$(this).val();
                 $.ajax({
-                    url:"db/atualizarCliente.php",                    
+                    url:"db/manterCliente.php",                    
                     type:"post",                            
-                    data: "Cli_Id="+idAtualizar,
+                    data: "Cli_Id_At="+idAtualizar,
                     dataType: "JSON",
                     success: function (result){ 
                         //var dados = JSON.parse(result);
@@ -131,15 +141,16 @@ if (!empty($_GET['enter'])){
                         $("#myModalAtualizar").modal({backdrop: false});
                     }
                 });
-                //alert((this).val());
-            });
+                
+            });// Fim da Função Clicar Botão Atualizar
 
+            // Função Submit Modal Atualizar
             $('#formAtualizar').submit(function(){
                 $('#retornoAt').hide();
                 var json = jQuery(this).serialize();
                 $.ajax({
                     type: "POST",
-                    url: "db/atualizarCliente.php",
+                    url: "db/manterCliente.php",
                     data: json,
                     success: function(result)
                     {
@@ -147,7 +158,12 @@ if (!empty($_GET['enter'])){
                             $('#retornoAt').show();
                             $('#retornoAt').addClass('animated shake');                     
                             $("#retornoAt").html("<p class='text-center'>Informações atualizadas!</p>");
-                            location.reload();
+                            $(document).ready(function(){
+                                $("button.close").click(function(){
+                                    location.reload();
+                                });
+                            });
+
                         }if (result !=1){
                             $('#retornoAt').show();
                             $('#retornoAt').addClass('animated shake');                     
@@ -156,11 +172,34 @@ if (!empty($_GET['enter'])){
                     }
                 });
 
-
                 return false;
-                //location.reload();
-            });
+            });// Fim da Função Submit Modal Atualizar
             
+            // Função Clicar Botão Deletar
+            $('button#apagar').click(function() {
+                var r = confirm("Você confirma a exclusão do Usuário?");
+                    if (r == true) {
+                            var idDeletar=$(this).val();
+                        $.ajax({
+                            url:"db/manterCliente.php",                    
+                            type:"post",                            
+                            data: "Cli_Id_Del="+idDeletar,
+                            //dataType: "JSON",
+                            success: function (result){ 
+                                if (result == 1) {
+                                    alert("Cliente excluído!");
+                                    location.reload();
+                                }if (result !=1){
+                                    alert("Ops!: "+ result+ ".");                    
+                        }
+
+
+                            }
+                        });
+                    }
+            });// Fim da Função Clicar Botão Deletar
+            
+
         });
 
 
@@ -348,8 +387,8 @@ if (!empty($_GET['enter'])){
                             echo '&nbsp;';
                             echo '<button type="button" class="btn btn-success" id="atualizar" value="'.$row['Cli_Id'].'">Atualizar</button>';
                             echo '&nbsp;';
-                            echo '<button type="button" class="btn btn-danger" onclick="deleteUser('.$row['Cli_Id'].');">Apagar</button>';
-                            //echo '<a class="btn btn-danger" href="delete.php?id='.$row['id_User'].'">Apagar</a>';
+                            echo '<button type="button" class="btn btn-danger" id="apagar" value="'.$row['Cli_Id'].'">Apagar</button>';
+                            //echo '<a class="btn btn-danger" href="delete.php?id='.$row['id_User'].'">Apagar</a> onclick="deleteUser('.$row['Cli_Id'].');"';
                             echo '</td>';
                             echo '</tr>';
                             }
