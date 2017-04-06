@@ -147,6 +147,7 @@ if (!empty($_GET['enter'])){
                             $('#retornoAt').show();
                             $('#retornoAt').addClass('animated shake');                     
                             $("#retornoAt").html("<p class='text-center'>Informações atualizadas!</p>");
+                            location.reload();
                         }if (result !=1){
                             $('#retornoAt').show();
                             $('#retornoAt').addClass('animated shake');                     
@@ -273,14 +274,14 @@ if (!empty($_GET['enter'])){
                                     <div class="form-group">
                                         <label class="control-label col-sm-2" for="enderecoAt">Endereço:</label>
                                         <div class="col-sm-10"> 
-                                          <textarea class="form-control" rows="4" id="enderecoAt" style="resize:vertical;"></textarea>
+                                          <textarea class="form-control" rows="4" id="enderecoAt" name="enderecoAt" style="resize:vertical;"></textarea>
                                         </div>
                                     </div>
 
                                     <div class="form-group">
                                         <label class="control-label col-sm-2" for="descricaoAt">Descrição:</label>
                                         <div class="col-sm-10"> 
-                                          <textarea class="form-control" rows="4" id="descricaoAt" style="resize:vertical;"></textarea>
+                                          <textarea class="form-control" rows="4" id="descricaoAt" name="descricaoAt" style="resize:vertical;"></textarea>
                                           <input type="hidden" name="idAt" id="idAt" value="">
                                         </div>
                                     </div>
