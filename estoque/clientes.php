@@ -76,6 +76,24 @@ if (!empty($_GET['enter'])){
 
     
     <script>
+        
+         $(window).resize(function(){
+            if ( $(window).width() < 600) {
+                $('#ocultarTitulo1').hide();
+                $('#ocultarTitulo2').hide();
+                $('#tableUser').addClass('hide_colTelefoneEmail');  
+            }if ( $(window).width() < 750 && $(window).width() > 600) {
+                $('#ocultarTitulo1').show();
+                $('#ocultarTitulo2').hide();
+                $('#tableUser').removeClass('hide_colTelefoneEmail').addClass('hide_colEmail');
+            }if ( $(window).width() > 750) {
+                $('#ocultarTitulo1').show();
+                $('#ocultarTitulo2').show();
+                $('#tableUser').removeClass('hide_colEmail hide_colTelefoneEmail');  
+            }
+        });
+
+        
 
         //Script Modal Login
         $(document).ready(function(){
@@ -225,10 +243,11 @@ if (!empty($_GET['enter'])){
                     <div class="modal-dialog">
                         <!-- Modal content-->
                         <div class="modal-content">
-                            <div class="modal-body" style="padding:40px 50px;">
+                            <div class="modal-header">
                                 <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                <h3>Cadastro de clientes  <span class="glyphicon glyphicon-user"></span></h3>
-                                    
+                                <h3><span class="glyphicon glyphicon-user"></span> Cadastro de clientes</h3>
+                            </div>
+                            <div class="modal-body" style="padding:30px 40px;">
                                 <form class="form-horizontal" method="POST" action="create_user.php" style="max-width: 600px;">
                                       <!--Nome-->
                                     <div class="form-group">
@@ -255,14 +274,14 @@ if (!empty($_GET['enter'])){
                                     <div class="form-group">
                                         <label class="control-label col-sm-2" for="endereco">Endereço:</label>
                                         <div class="col-sm-10"> 
-                                          <textarea class="form-control" rows="4" id="endereco" style="resize:vertical;"></textarea>
+                                          <textarea class="form-control" rows="3" id="endereco" style="resize:vertical;"></textarea>
                                         </div>
                                     </div>
 
                                     <div class="form-group">
                                         <label class="control-label col-sm-2" for="endereco">Descrição:</label>
                                         <div class="col-sm-10"> 
-                                          <textarea class="form-control" rows="4" id="descricao" style="resize:vertical;"></textarea>
+                                          <textarea class="form-control" rows="3" id="descricao" style="resize:vertical;"></textarea>
                                         </div>
                                     </div>
                                     
@@ -283,9 +302,11 @@ if (!empty($_GET['enter'])){
                     <div class="modal-dialog">
                         <!-- Modal content-->
                         <div class="modal-content">
-                            <div class="modal-body" style="padding:40px 50px;">
+                            <div class="modal-header">
                                 <button type="button" class="close" data-dismiss="modal">&times;</button>
                                 <h3><span class="glyphicon glyphicon-pencil"></span> Atualizar Dados</h3>
+                            </div>
+                            <div class="modal-body" style="padding:30px 40px;">
                                     
                                 <form class="form-horizontal" id="formAtualizar" style="max-width: 600px;">
                                       <!--Nome-->
@@ -313,14 +334,14 @@ if (!empty($_GET['enter'])){
                                     <div class="form-group">
                                         <label class="control-label col-sm-2" for="enderecoAt">Endereço:</label>
                                         <div class="col-sm-10"> 
-                                          <textarea class="form-control" rows="4" id="enderecoAt" name="enderecoAt" style="resize:vertical;"></textarea>
+                                          <textarea class="form-control" rows="3" id="enderecoAt" name="enderecoAt" style="resize:vertical;"></textarea>
                                         </div>
                                     </div>
 
                                     <div class="form-group">
                                         <label class="control-label col-sm-2" for="descricaoAt">Descrição:</label>
                                         <div class="col-sm-10"> 
-                                          <textarea class="form-control" rows="4" id="descricaoAt" name="descricaoAt" style="resize:vertical;"></textarea>
+                                          <textarea class="form-control" rows="3" id="descricaoAt" name="descricaoAt" style="resize:vertical;"></textarea>
                                           <input type="hidden" name="idAt" id="idAt" value="">
                                         </div>
                                     </div>
@@ -341,13 +362,11 @@ if (!empty($_GET['enter'])){
 
                 <!--Tabela de consulta-->
                 <div class="container">
-                    <div class="row">
-                    <h3>Base de Dados</h3>
-                    </div>
-                    <div class="row">
+                    
+                    <div class="row" style="margin-top: 25px;">
                         <div class="col-sm-3">
                         <p>
-                        <a id="myBtn" class="btn btn-success">Cadastrar</a>
+                        <a id="myBtn" class="btn btn-warning">Cadastrar</a>
                         </p>
                         </div>
                         <div class="col-sm-6">
@@ -365,12 +384,12 @@ if (!empty($_GET['enter'])){
                             </form>
                         </div> 
                         
-                        <table class="table table-striped table-bordered">
+                        <table class="table table-striped table-bordered" id="tableUser">
                         <thead>
                             <tr>
                                 <th>Nome</th>
-                                <th>Telefone</th>
-                                <th>E-Mail</th>
+                                <th id="ocultarTitulo1">Telefone</th>
+                                <th id="ocultarTitulo2">E-Mail</th>
                                 <th>Ações</th>
                             </tr>
                         </thead>
@@ -379,8 +398,8 @@ if (!empty($_GET['enter'])){
                             foreach ($pdo->query($sql) as $row) {
                             echo '<tr>';
                             echo '<td>'. $row['Cli_Nome'] . '</td>';
-                            echo '<td>'. $row['Cli_Telefone'] . '</td>';
-                            echo '<td>'. $row['Cli_Email'] . '</td>';
+                            echo '<td class="ocultarTelefoneEmail">'. $row['Cli_Telefone'] . '</td>';
+                            echo '<td class="ocultarTelefoneEmail ocultarEMail">'. $row['Cli_Email'] . '</td>';
 
                             echo '<td width=250>';
                             echo '<button type="button" class="btn" id="ver" value="'.$row['Cli_Id'].'">Ver</button>';
@@ -396,7 +415,6 @@ if (!empty($_GET['enter'])){
                             echo 'ERROR: ' . $e->getCode() .'Formação das Linhas';
                         }?>
 
-                        </tbody>
                         </table>
                     </div><!--Class Row-->
                         <?php

@@ -10,3 +10,25 @@ p#titulo2{
 	font-family: 'Ubuntu', sans-serif;
 	font-size: 16pt;
 }
+
+#myModalAtualizar .modal-header, .close {
+  background-color: #5cb85c;
+  color:white !important;
+  text-align: center;
+  font-size: 30px;
+}
+
+#myModal .modal-header, .close {
+  background-color: #EFAE4A;
+  color: white !important;
+  text-align: center;
+  font-size: 18pt;
+}
+
+#tableUser.hide_colTelefoneEmail td.ocultarTelefoneEmail {
+    display:none;
+}
+
+#tableUser.hide_colEmail td.ocultarEMail {
+    display:none;
+}
