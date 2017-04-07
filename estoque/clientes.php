@@ -97,9 +97,7 @@ if (!empty($_GET['enter'])){
 
         //Script Modal Login
         $(document).ready(function(){
-            $("#myBtn").click(function(){
-                $("#myModal").modal({backdrop: false});
-            });
+            
         });
 
         function formatar(mascara, documento){
@@ -117,13 +115,55 @@ if (!empty($_GET['enter'])){
         //Manter dados do cliente.
         $(document).ready(function(){
 
+            //Script Botão Cadastrar.
+            $("#myBtn").click(function(){
+                $('#retornoCad').hide();
+                $("#myModal").modal({backdrop: false});
+                $('#formCadastrar').each(function(){
+                    this.reset();
+                });
+            });
+
+            //Script Submit Cadastrar.
+            $('#formCadastrar').submit(function(){
+                $('#retornoCad').hide();
+                var json = jQuery(this).serialize();
+                $.ajax({
+                    type: "POST",
+                    url:"db/manterCliente.php",
+                    data: json,
+                    success: function(result){
+                        if(result==1){
+                            $('#retornoCad').show();
+                            $('#retornoCad').addClass('animated shake');                     
+                            $("#retornoCad").html("<p class='text-center'>Cliente Cadastrado!<br>Insira novos dados.</p>");
+                            $('#formCadastrar').each(function(){
+                              this.reset();
+                            });
+                            $(document).ready(function(){
+                                $("button.close").click(function(){
+                                    location.reload();
+                                });
+                            });
+
+                        }if (result !=1){
+                            $('#retornoAt').show();
+                            $('#retornoAt').addClass('animated shake');                     
+                            $("#retornoAt").html("<p class='text-center'>Ops!: "+ result+ "</p>");
+                        }
+                    }
+                });
+
+
+            });//Fim Script Submit Cadastrar
+
             // Função Clicar Botão Ver
             $('button#ver').click(function() {
                 var idVer=$(this).val();
                 $.ajax({
                     url:"db/manterCliente.php",                    
                     type:"post",                            
-                    data: "Cli_Id_At="+idAtualizar,
+                    data: "Cli_Id_Ver="+idVer,
                     dataType: "JSON",
                     success: function (result){ 
                         //var dados = JSON.parse(result);
@@ -248,7 +288,7 @@ if (!empty($_GET['enter'])){
                                 <h3><span class="glyphicon glyphicon-user"></span> Cadastro de clientes</h3>
                             </div>
                             <div class="modal-body" style="padding:30px 40px;">
-                                <form class="form-horizontal" method="POST" action="create_user.php" style="max-width: 600px;">
+                                <form class="form-horizontal" id="formCadastrar" style="max-width: 600px;">
                                       <!--Nome-->
                                     <div class="form-group">
                                         <label class="control-label col-sm-2" for="nome">Nome:</label>
@@ -289,6 +329,7 @@ if (!empty($_GET['enter'])){
                                     <div class="form-group"> 
                                         <div class="col-sm-offset-2 col-sm-10">
                                             <button type="submit" class="btn btn-default">Cadastrar</button>
+                                            <p id="retornoCad" class="text-center"></p>
                                         </div>
                                     </div>
                                 </form>
