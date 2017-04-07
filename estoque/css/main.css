@@ -25,6 +25,15 @@ p#titulo2{
   font-size: 18pt;
 }
 
+#myModalVer .modal-header, .close {
+  background-color: #5AC3DE;
+  color: white !important;
+  text-align: center;
+  font-size: 18pt;
+}
+
+
+
 #tableUser.hide_colTelefoneEmail td.ocultarTelefoneEmail {
     display:none;
 }

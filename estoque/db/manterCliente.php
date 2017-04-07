@@ -49,36 +49,69 @@ if (!empty($_POST['Cli_Id_At'])) {
 }elseif (!empty($_POST)) {
 
 	try{
-        $json = $_POST;
-		$dados = json_decode(json_encode($json), true);
+      $json = $_POST;
+		  $dados = json_decode(json_encode($json), true);
 
-		$Cli_Nome = $dados['nomeAt'];
-	    $Cli_Telefone = $dados['telefoneAt'];
-	    $Cli_Email = $dados['emailAt'];
-	    $Cli_Endereco = $dados['enderecoAt'];
-	    $Cli_Descricao = $dados['descricaoAt'];
-	    $Cli_Id = $dados['idAt'];
+      if (isset($dados['idAt'])){
+        $Cli_Nome = $dados['nomeAt'];
+        $Cli_Telefone = $dados['telefoneAt'];
+        $Cli_Email = $dados['emailAt'];
+        $Cli_Endereco = $dados['enderecoAt'];
+        $Cli_Descricao = $dados['descricaoAt'];
+        $Cli_Id = $dados['idAt'];
 
 
-		include '../../db/conecta.php';
+        include '../../db/conecta.php';
 
-		$sql = $pdo->prepare("update Clientes  SET Cli_Nome = ?, Cli_Telefone = ?, Cli_Email = ?, Cli_Endereco = ?, Cli_Descricao = ?, Cli_Ultima_Alteracao = NOW() WHERE Cli_Id = ?");
-	    $sql->bindParam(1, $Cli_Nome , PDO::PARAM_STR);
-	    $sql->bindParam(2, $Cli_Telefone , PDO::PARAM_STR);
-	    $sql->bindParam(3, $Cli_Email , PDO::PARAM_STR);
-	    $sql->bindParam(4, $Cli_Endereco , PDO::PARAM_STR);
-	    $sql->bindParam(5, $Cli_Descricao , PDO::PARAM_STR);
-	    $sql->bindParam(6, $Cli_Id , PDO::PARAM_INT);
-		$sql->execute();
+        $sql = $pdo->prepare("update Clientes  SET Cli_Nome = ?, Cli_Telefone = ?, Cli_Email = ?, Cli_Endereco = ?, Cli_Descricao = ?, Cli_Ultima_Alteracao = NOW() WHERE Cli_Id = ?");
+        $sql->bindParam(1, $Cli_Nome , PDO::PARAM_STR);
+        $sql->bindParam(2, $Cli_Telefone , PDO::PARAM_STR);
+        $sql->bindParam(3, $Cli_Email , PDO::PARAM_STR);
+        $sql->bindParam(4, $Cli_Endereco , PDO::PARAM_STR);
+        $sql->bindParam(5, $Cli_Descricao , PDO::PARAM_STR);
+        $sql->bindParam(6, $Cli_Id , PDO::PARAM_INT);
+        $sql->execute();
 
-		$count = $sql->rowCount();
-	    
+        $count = $sql->rowCount();
+        
 
-	    if ($count == 1) {
-	    	echo "1";
-	    }else{
-	    	echo "Ocorreu um ERRO na execução da instrução!";
-	    }
+        if ($count == 1) {
+          echo "1";
+        }else{
+          echo "Ocorreu um ERRO na execução da instrução!";
+        }
+      
+      }elseif (!isset($dados['idAt'])) {
+        $Cli_Nome = $dados['nomeCad'];
+        $Cli_Telefone = $dados['telefoneCad'];
+        $Cli_Email = $dados['emailCad'];
+        $Cli_Endereco = $dados['enderecoCad'];
+        $Cli_Descricao = $dados['descricaoCad'];
+
+        include '../../db/conecta.php';
+
+        $sql = $pdo->prepare("insert into Clientes (Cli_Nome, Cli_Telefone, Cli_Email, Cli_Endereco, Cli_Descricao, Cli_Ultima_Alteracao) values (?,?,?,?,?, NOW() )");
+        $sql->bindParam(1, $Cli_Nome , PDO::PARAM_STR);
+        $sql->bindParam(2, $Cli_Telefone , PDO::PARAM_STR);
+        $sql->bindParam(3, $Cli_Email , PDO::PARAM_STR);
+        $sql->bindParam(4, $Cli_Endereco , PDO::PARAM_STR);
+        $sql->bindParam(5, $Cli_Descricao , PDO::PARAM_STR);
+        $sql->execute();
+
+        $count = $sql->rowCount();
+        
+
+        if ($count == 1) {
+          echo "1";
+        }else{
+          echo "Ocorreu um ERRO na execução da instrução!";
+        }
+
+
+
+      }
+		  
+      
 
 	}
 	catch(PDOException $e){

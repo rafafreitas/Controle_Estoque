@@ -71,6 +71,7 @@ if (!empty($_GET['enter'])){
     <link rel="stylesheet" type="text/css" href="css/main.css">
 
     <script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
+    <script type="text/javascript" src="http://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
     <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
     <script type="text/javascript" src='js/main.js'></script>
 
@@ -111,10 +112,16 @@ if (!empty($_GET['enter'])){
 
         }
 
+        $(window).load(function(){
+        $("#myModal").draggable({
+            handle: ".modal-header"
+        });
+        });
 
         //Manter dados do cliente.
         $(document).ready(function(){
-
+            
+           
             //Script Botão Cadastrar.
             $("#myBtn").click(function(){
                 $('#retornoCad').hide();
@@ -124,6 +131,8 @@ if (!empty($_GET['enter'])){
                 });
             });
 
+
+
             //Script Submit Cadastrar.
             $('#formCadastrar').submit(function(){
                 $('#retornoCad').hide();
@@ -132,14 +141,15 @@ if (!empty($_GET['enter'])){
                     type: "POST",
                     url:"db/manterCliente.php",
                     data: json,
-                    success: function(result){
+                    success: function(result)
+                    {
                         if(result==1){
                             $('#retornoCad').show();
                             $('#retornoCad').addClass('animated shake');                     
                             $("#retornoCad").html("<p class='text-center'>Cliente Cadastrado!<br>Insira novos dados.</p>");
                             $('#formCadastrar').each(function(){
-                              this.reset();
-                            });
+                    this.reset();
+                });
                             $(document).ready(function(){
                                 $("button.close").click(function(){
                                     location.reload();
@@ -147,15 +157,15 @@ if (!empty($_GET['enter'])){
                             });
 
                         }if (result !=1){
-                            $('#retornoAt').show();
-                            $('#retornoAt').addClass('animated shake');                     
-                            $("#retornoAt").html("<p class='text-center'>Ops!: "+ result+ "</p>");
+                            $('#retornoCad').show();
+                            $('#retornoCad').addClass('animated shake');                     
+                            $("#retornoCad").html("<p class='text-center'>Ops!: "+ result+ "</p>");
                         }
                     }
                 });
-
-
+                return false;
             });//Fim Script Submit Cadastrar
+
 
             // Função Clicar Botão Ver
             $('button#ver').click(function() {
@@ -163,16 +173,16 @@ if (!empty($_GET['enter'])){
                 $.ajax({
                     url:"db/manterCliente.php",                    
                     type:"post",                            
-                    data: "Cli_Id_Ver="+idVer,
+                    data: "Cli_Id_At="+idVer,
                     dataType: "JSON",
                     success: function (result){ 
                         //var dados = JSON.parse(result);
-                        $("#idVer").val(result[0].Cli_Id);
-                        $("#nomeVer").val(result[0].Cli_Nome);
-                        $("#emailVer").val(result[0].Cli_Email);
-                        $("#telefoneVer").val(result[0].Cli_Telefone);
-                        $("#enderecoVer").val(result[0].Cli_Endereco);
-                        $("#descricaoVer").val(result[0].Cli_Descricao);
+                        $("#nomeVer").html("<dd id='nomeVer'>"+result[0].Cli_Nome+"</dd>");
+                        $("#emailVer").html("<dd id='nomeVer'>"+result[0].Cli_Email+"</dd>");
+                        $("#telefoneVer").html("<dd id='nomeVer'>"+result[0].Cli_Telefone+"</dd>");
+                        $("#enderecoVer").html("<dd id='nomeVer'>"+result[0].Cli_Endereco+"</dd>");
+                        $("#descricaoVer").html("<dd id='nomeVer'>"+result[0].Cli_Descricao+"</dd>");
+                        $("#dataVer").html("<dd id='nomeVer'>"+result[0].Cli_Ultima_Alteracao+"</dd>");
                         $("#myModalVer").modal({backdrop: false});
                     }
                 });
@@ -291,37 +301,37 @@ if (!empty($_GET['enter'])){
                                 <form class="form-horizontal" id="formCadastrar" style="max-width: 600px;">
                                       <!--Nome-->
                                     <div class="form-group">
-                                        <label class="control-label col-sm-2" for="nome">Nome:</label>
+                                        <label class="control-label col-sm-2" for="nomeCad">Nome:</label>
                                         <div class="col-sm-10">
-                                          <input type="text" class="form-control" id="nome" name="nome" placeholder="Informe o nome do usuário" required>
+                                          <input type="text" class="form-control" id="nomeCad" name="nomeCad" placeholder="Informe o nome do usuário" required>
                                         </div>
                                     </div>
                                     <!--E-Mail-->
                                     <div class="form-group">
-                                        <label class="control-label col-sm-2" for="email">E-Mail:</label>
+                                        <label class="control-label col-sm-2" for="emailCad">E-Mail:</label>
                                         <div class="col-sm-10"> 
-                                          <input type="email" class="form-control" id="email" name="email" placeholder="E-mail para contato." pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" title="exemplo@exemplo.com" required>
+                                          <input type="email" class="form-control" id="emailCad" name="emailCad" placeholder="E-mail para contato." pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" title="exemplo@exemplo.com" required>
                                         </div>
                                     </div>
                                     <!--Telefone-->
                                     <div class="form-group">
-                                        <label class="control-label col-sm-2" for="telefone">Telefone:</label>
+                                        <label class="control-label col-sm-2" for="telefoneCad">Telefone:</label>
                                         <div class="col-sm-10">
-                                            <input pattern="^\d{2}-\d{5}-\d{4}$" type="tel" class="form-control" rows="3" id="telefone" name="telefone" OnKeyPress="formatar('##-#####-####', this)" maxlength="13" placeholder="00-00000-0000" style="max-width: 150px;" required></input>Caso deseje informar um Nº Fixo, colocar um 0 no lugar do 9º dígito.
+                                            <input pattern="^\d{2}-\d{5}-\d{4}$" type="tel" class="form-control" rows="3" id="telefoneCad" name="telefoneCad" OnKeyPress="formatar('##-#####-####', this)" maxlength="13" placeholder="00-00000-0000" style="max-width: 150px;" required></input>Caso deseje informar um Nº Fixo, colocar um 0 no lugar do 9º dígito.
                                         </div>
                                     </div>
                                     <!--Endereço -->
                                     <div class="form-group">
-                                        <label class="control-label col-sm-2" for="endereco">Endereço:</label>
+                                        <label class="control-label col-sm-2" for="enderecoCad">Endereço:</label>
                                         <div class="col-sm-10"> 
-                                          <textarea class="form-control" rows="3" id="endereco" style="resize:vertical;"></textarea>
+                                          <textarea class="form-control" rows="3" id="enderecoCad" name="enderecoCad" style="resize:vertical;" required></textarea>
                                         </div>
                                     </div>
 
                                     <div class="form-group">
-                                        <label class="control-label col-sm-2" for="endereco">Descrição:</label>
+                                        <label class="control-label col-sm-2" for="descricaoCad">Descrição:</label>
                                         <div class="col-sm-10"> 
-                                          <textarea class="form-control" rows="3" id="descricao" style="resize:vertical;"></textarea>
+                                          <textarea class="form-control" rows="3" id="descricaoCad" name="descricaoCad" style="resize:vertical;" required></textarea>
                                         </div>
                                     </div>
                                     
@@ -337,6 +347,38 @@ if (!empty($_GET['enter'])){
                         </div><!--modal-content (Cadastrar)-->
                     </div><!--modal-dialog (Cadastrar)-->
                 </div> <!--modal fade (Cadastrar)-->
+
+
+                <div class="modal fade" id="myModalVer" role="dialog">
+                    <div class="modal-dialog">
+                        <!-- Modal content-->
+                        <div class="modal-content" style="max-width: 300px;">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                <h4><span class="glyphicon glyphicon-user"></span> Informações do cliente</h4>
+                            </div>
+                            <div class="modal-body" style="padding:30px 40px;">
+                                <dl>
+                                    <dt>Nome:</dt>
+                                        <dd id="nomeVer"></dd>
+                                    <dt>Telefone:</dt>
+                                        <dd id="telefoneVer"></dd>
+                                    <dt>E-Mail:</dt>
+                                        <dd id="emailVer"></dd>
+                                    <dt>Endereço:</dt>
+                                        <dd id="enderecoVer"></dd>
+                                    <dt>Descrição:</dt>
+                                        <dd id="descricaoVer"></dd>
+                                    <dt>Última Atualização:</dt>
+                                        <dd id="dataVer"></dd>
+                                </dl> 
+
+                            </div> <!--modal-body (Ver Dados do Cliente)-->
+                        </div><!--modal-content (Ver Dados do Cliente)-->
+                    </div><!--modal-dialog (Ver Dados do Cliente)-->
+                </div> <!--modal fade (Ver Dados do Cliente)-->
+
+
 
                 <!--Modal para atualizaçao-->
                 <div class="modal fade" id="myModalAtualizar" role="dialog">
@@ -375,14 +417,14 @@ if (!empty($_GET['enter'])){
                                     <div class="form-group">
                                         <label class="control-label col-sm-2" for="enderecoAt">Endereço:</label>
                                         <div class="col-sm-10"> 
-                                          <textarea class="form-control" rows="3" id="enderecoAt" name="enderecoAt" style="resize:vertical;"></textarea>
+                                          <textarea class="form-control" rows="3" id="enderecoAt" name="enderecoAt" style="resize:vertical;" required></textarea>
                                         </div>
                                     </div>
 
                                     <div class="form-group">
                                         <label class="control-label col-sm-2" for="descricaoAt">Descrição:</label>
                                         <div class="col-sm-10"> 
-                                          <textarea class="form-control" rows="3" id="descricaoAt" name="descricaoAt" style="resize:vertical;"></textarea>
+                                          <textarea class="form-control" rows="3" id="descricaoAt" name="descricaoAt" style="resize:vertical;" required></textarea>
                                           <input type="hidden" name="idAt" id="idAt" value="">
                                         </div>
                                     </div>
