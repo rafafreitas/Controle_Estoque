@@ -15,7 +15,6 @@
 
     <?php require_once ("validacao.php"); ?>
   
-
 </head>
 <body>
     <div id="wrapper">
