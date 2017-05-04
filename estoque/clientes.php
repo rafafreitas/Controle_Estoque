@@ -78,6 +78,22 @@ if (!empty($_GET['enter'])){
     
     <script>
         
+        $(document).ready(function(){
+            if ( $(window).width() < 600) {
+                $('#ocultarTitulo1').hide();
+                $('#ocultarTitulo2').hide();
+                $('#tableUser').addClass('hide_colTelefoneEmail');  
+            }if ( $(window).width() < 750 && $(window).width() > 600) {
+                $('#ocultarTitulo1').show();
+                $('#ocultarTitulo2').hide();
+                $('#tableUser').removeClass('hide_colTelefoneEmail').addClass('hide_colEmail');
+            }if ( $(window).width() > 750) {
+                $('#ocultarTitulo1').show();
+                $('#ocultarTitulo2').show();
+                $('#tableUser').removeClass('hide_colEmail hide_colTelefoneEmail');  
+            }
+        });
+
          $(window).resize(function(){
             if ( $(window).width() < 600) {
                 $('#ocultarTitulo1').hide();
